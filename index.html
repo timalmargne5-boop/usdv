@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Site de l'US Davézieux-Vidalon (USDV), club de football de Davézieux, Ardèche.">
+<link rel="icon" href="img/logo.png">
+<title>US Davézieux-Vidalon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>
+/* Layout : site de club classique — bandeau, hero photo + prochain match, actus, résultats, équipes, club, partenaires, pied de page */
+:root {
+  --navy: #0f1a45;        /* bleu nuit du blason */
+  --navy-2: #1f3d9a;      /* bleu roi du blason */
+  --royal: #1f5fd1;       /* bleu des rayures du maillot */
+  --gold: #f2c230;        /* jaune du liseré et du ruban */
+  --bg: #f3f5fa;
+  --surface: #ffffff;
+  --fg: #141a33;
+  --muted: #5a6385;
+  --line: #dde2ee;
+  --on-dark: #ffffff;
+  --on-dark-muted: #b9c2e0;
+  --win: #1f8a4c; --draw: #8a8f9f; --loss: #c0392b;
+  --display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --body: "Barlow", "Segoe UI", Roboto, Arial, sans-serif;
+  --cond: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  --wrap: 1180px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1126; --surface: #161c3a; --fg: #eef1fb; --muted: #a2abcc; --line: #2a3360;
+    --royal: #4f86f5; --gold: #d8b45e; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1126; --surface: #161c3a; --fg: #eef1fb; --muted: #a2abcc; --line: #2a3360;
+  --royal: #4f86f5; --gold: #d8b45e; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.55; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--navy); }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); text-transform: uppercase; line-height: 1; margin: 0; text-wrap: balance; letter-spacing: .01em; }
+.wrap { max-width: var(--wrap); margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font-family: var(--cond); font-weight: 700; text-transform: uppercase; letter-spacing: .14em; font-size: .8rem; color: var(--royal); }
+.dark .eyebrow { color: var(--gold); }
+.section { padding-block: 72px; }
+.section-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+.section-head h2 { font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 900; }
+.link-more { font-family: var(--cond); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; font-size: .9rem; text-decoration: none; border-bottom: 2px solid var(--gold); padding-bottom: 2px; }
+.tag-ex { display: inline-block; font-family: var(--cond); font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 2px 7px; border: 1px dashed currentColor; border-radius: 3px; opacity: .75; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+/* Bandeau maquette */
+.notice { background: var(--gold); color: var(--navy); font-family: var(--cond); font-weight: 600; font-size: .92rem; text-align: center; padding-block: 6px; }
+
+/* En-tête */
+header.site { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: var(--navy); color: var(--on-dark); border-bottom: 3px solid var(--gold); }
+.topbar { background: #12163a; font-family: var(--cond); font-size: .85rem; color: var(--on-dark-muted); }
+.topbar .wrap { display: flex; justify-content: space-between; gap: 12px; padding-block: 6px; flex-wrap: wrap; }
+.topbar a { text-decoration: none; }
+.topbar a:hover { color: var(--on-dark); }
+.nav { display: flex; align-items: center; gap: 24px; padding-block: 10px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; margin-right: auto; }
+.brand img { width: 54px; height: auto; }
+.brand b { font-family: var(--display); font-weight: 900; font-size: 1.6rem; text-transform: uppercase; line-height: .95; display: block; }
+.brand small { font-family: var(--cond); color: var(--gold); letter-spacing: .14em; text-transform: uppercase; font-size: .72rem; font-weight: 600; }
+.menu { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
+.menu a { display: block; padding: 10px 12px; font-family: var(--cond); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; font-size: .98rem; text-decoration: none; border-radius: 4px; }
+.menu a:hover { background: rgba(255,255,255,.08); color: var(--gold); }
+.btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--cond); font-weight: 700; text-transform: uppercase; letter-spacing: .07em; font-size: .95rem; padding: 11px 18px; border-radius: 4px; text-decoration: none; border: 2px solid transparent; cursor: pointer; }
+.btn-gold { background: var(--gold); color: var(--navy); }
+.btn-gold:hover { filter: brightness(1.08); }
+.btn-ghost { border-color: rgba(255,255,255,.5); color: #fff; }
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+.burger { display: none; background: none; border: 2px solid rgba(255,255,255,.35); color: #fff; border-radius: 4px; padding: 8px 10px; font-family: var(--cond); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; cursor: pointer; }
+@media (max-width: 960px) {
+  .burger { display: block; }
+  .nav .btn-gold { display: none; }
+  .menu { display: none; position: absolute; left: 0; right: 0; top: 100%; flex-direction: column; background: var(--navy); border-bottom: 3px solid var(--gold); padding: 8px max(16px, env(safe-area-inset-right, 0px)) 16px max(16px, env(safe-area-inset-left, 0px)); }
+  .menu.open { display: flex; }
+  .menu a { font-size: 1.15rem; padding: 12px 4px; border-bottom: 1px solid rgba(255,255,255,.08); border-radius: 0; }
+}
+
+/* Hero */
+.hero { position: relative; color: #fff; background: var(--navy); overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; background: repeating-linear-gradient(90deg, #0a0d1a 0 70px, #1f5fd1 70px 140px); }
+.hero-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(18,22,58,.95) 0%, rgba(18,22,58,.78) 45%, rgba(18,22,58,.35) 100%), linear-gradient(0deg, rgba(18,22,58,.9) 0%, rgba(18,22,58,0) 40%); }
+.hero .wrap { position: relative; display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: end; padding-block: 88px 56px; }
+.hero-text { min-width: 0; }
+.hero h1 { font-size: clamp(3.2rem, 9vw, 6.6rem); font-weight: 900; margin: 10px 0 18px; }
+.hero h1 span { color: var(--gold); display: block; }
+.hero p { max-width: 46ch; color: var(--on-dark-muted); font-size: 1.12rem; margin: 0 0 26px; }
+.hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.since { display: inline-flex; align-items: center; gap: 10px; font-family: var(--cond); font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); font-size: .85rem; }
+.since::before { content: ""; width: 34px; height: 2px; background: var(--gold); }
+
+.next { background: rgba(255,255,255,.97); color: #141a33; border-radius: 6px; overflow: hidden; box-shadow: 0 18px 40px rgba(0,0,0,.35); min-width: 0; }
+.next-top { background: var(--gold); color: var(--navy); display: flex; justify-content: space-between; align-items: center; padding: 10px 18px; font-family: var(--cond); font-weight: 700; text-transform: uppercase; letter-spacing: .1em; font-size: .85rem; }
+.next-body { padding: 22px 18px; }
+.versus { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; text-align: center; }
+.club { display: grid; justify-items: center; gap: 8px; font-family: var(--cond); font-weight: 700; text-transform: uppercase; font-size: 1rem; line-height: 1.1; }
+.club img, .club .crest { width: 64px; height: 64px; object-fit: contain; }
+.crest { display: grid; place-items: center; border-radius: 50%; background: #e6e9f2; color: #5a6385; font-family: var(--display); font-weight: 900; font-size: 1.4rem; }
+.vs { font-family: var(--display); font-weight: 900; font-size: 2rem; color: #263a74; }
+.next-meta { margin-top: 18px; padding-top: 14px; border-top: 1px solid #dde2ee; display: grid; gap: 4px; text-align: center; font-family: var(--cond); font-size: 1.02rem; }
+.next-meta strong { font-family: var(--display); font-size: 1.6rem; font-weight: 800; text-transform: uppercase; color: #1b2148; }
+.countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 14px; }
+.countdown div { background: #1b2148; color: #fff; border-radius: 4px; padding: 8px 0; text-align: center; font-family: var(--cond); font-size: .7rem; text-transform: uppercase; letter-spacing: .1em; }
+.countdown b { display: block; font-family: var(--display); font-size: 1.6rem; font-weight: 800; letter-spacing: 0; font-variant-numeric: tabular-nums; }
+@media (max-width: 860px) { .hero .wrap { grid-template-columns: 1fr; padding-block: 56px 40px; } }
+
+/* Bande chiffres */
+.facts { background: var(--royal); color: #fff; }
+.facts .wrap { display: grid; grid-template-columns: repeat(4, 1fr); padding-block: 22px; gap: 16px; }
+.fact { display: grid; gap: 2px; }
+.fact b { font-family: var(--display); font-size: 2.2rem; font-weight: 900; line-height: 1; }
+.fact span { font-family: var(--cond); text-transform: uppercase; letter-spacing: .1em; font-size: .82rem; opacity: .85; }
+@media (max-width: 700px) { .facts .wrap { grid-template-columns: repeat(2, 1fr); } }
+
+/* Actualités */
+.news { display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; }
+.news-side { display: grid; gap: 24px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; text-decoration: none; transition: transform .2s, box-shadow .2s; min-width: 0; }
+.card:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(20,26,51,.12); }
+.card img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
+.card.big img { aspect-ratio: 16 / 10; }
+.news-side .card { flex-direction: row; }
+.news-side .card img { width: 42%; aspect-ratio: auto; min-height: 150px; }
+.card-body { padding: 18px 20px 20px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.card-meta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-family: var(--cond); font-size: .82rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.cat { color: var(--royal); font-weight: 700; }
+.card h3 { font-size: 1.55rem; font-weight: 800; }
+.card.big h3 { font-size: clamp(1.8rem, 3vw, 2.3rem); }
+.card p { margin: 0; color: var(--muted); }
+@media (max-width: 860px) { .news { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .news-side .card { flex-direction: column; } .news-side .card img { width: 100%; aspect-ratio: 16/9; min-height: 0; } }
+
+/* Résultats + classement */
+.dark { background: var(--navy); color: var(--on-dark); }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.panel { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: 6px; padding: 22px; min-width: 0; }
+.panel h3 { font-size: 1.7rem; font-weight: 800; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.tab { background: transparent; color: var(--on-dark-muted); border: 1px solid rgba(255,255,255,.2); border-radius: 999px; padding: 6px 14px; font-family: var(--cond); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; font-size: .85rem; cursor: pointer; }
+.tab[aria-selected="true"] { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+.match { display: grid; grid-template-columns: 70px 1fr auto; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,.08); font-family: var(--cond); }
+.match:last-child { border-bottom: 0; }
+.m-date { font-size: .82rem; color: var(--on-dark-muted); text-transform: uppercase; letter-spacing: .06em; line-height: 1.2; }
+.m-teams { font-weight: 600; font-size: 1.05rem; min-width: 0; }
+.m-teams small { display: block; color: var(--on-dark-muted); font-weight: 500; font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; }
+.score { display: flex; align-items: center; gap: 8px; font-family: var(--display); font-weight: 800; font-size: 1.5rem; font-variant-numeric: tabular-nums; }
+.res { width: 24px; height: 24px; border-radius: 4px; display: grid; place-items: center; font-family: var(--cond); font-size: .8rem; font-weight: 700; color: #fff; }
+.res.v { background: var(--win); } .res.n { background: var(--draw); } .res.d { background: var(--loss); }
+.table-scroll { overflow-x: auto; }
+table.rank { width: 100%; border-collapse: collapse; font-family: var(--cond); font-size: 1rem; font-variant-numeric: tabular-nums; }
+.rank th { text-align: left; font-weight: 600; color: var(--on-dark-muted); text-transform: uppercase; font-size: .78rem; letter-spacing: .1em; padding: 6px 8px; border-bottom: 1px solid rgba(255,255,255,.15); }
+.rank td { padding: 9px 8px; border-bottom: 1px solid rgba(255,255,255,.07); }
+.rank th:not(:nth-child(2)), .rank td:not(:nth-child(2)) { text-align: center; }
+.rank tr.us td { background: rgba(201,162,74,.18); font-weight: 700; color: #fff; }
+.rank tr.us td:first-child { box-shadow: inset 3px 0 var(--gold); }
+@media (max-width: 860px) { .split { grid-template-columns: 1fr; } }
+
+/* Équipes */
+.teams { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.team { position: relative; border-radius: 6px; overflow: hidden; min-height: 210px; color: #fff; text-decoration: none; display: flex; align-items: end; background: var(--navy-2); }
+.team img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.team::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(18,22,58,.95) 10%, rgba(18,22,58,.2) 70%); }
+.team:hover img { transform: scale(1.05); }
+.team div { position: relative; z-index: 1; padding: 18px; }
+.team h3 { font-size: 1.8rem; font-weight: 900; }
+.team span { font-family: var(--cond); text-transform: uppercase; letter-spacing: .1em; font-size: .8rem; color: var(--gold); font-weight: 700; }
+.team.plain { background: linear-gradient(135deg, var(--navy-2), var(--navy)); }
+.team.plain::before { content: attr(data-age); position: absolute; right: 10px; top: 0; font-family: var(--display); font-weight: 900; font-size: 5.5rem; color: rgba(255,255,255,.07); line-height: 1; }
+@media (max-width: 900px) { .teams { grid-template-columns: repeat(2, 1fr); } }
+.team p { margin: 6px 0 0; font-family: var(--cond); font-size: 1rem; color: var(--on-dark-muted); }
+@media (max-width: 420px) { .teams { grid-template-columns: 1fr; } }
+
+/* Le club */
+.club-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.club-photo { position: relative; }
+.club-photo img { width: 100%; border-radius: 6px; display: block; aspect-ratio: 4 / 5; object-fit: cover; }
+.club-photo .badge { position: absolute; left: -16px; bottom: 28px; background: var(--navy); color: #fff; padding: 16px 20px; border-radius: 6px; border-left: 4px solid var(--gold); box-shadow: 0 10px 24px rgba(0,0,0,.25); }
+.badge b { font-family: var(--display); font-size: 2.6rem; font-weight: 900; line-height: 1; display: block; }
+.badge span { font-family: var(--cond); text-transform: uppercase; letter-spacing: .12em; font-size: .8rem; color: var(--gold); }
+.club-text { min-width: 0; }
+.club-text h2 { font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 900; margin: 8px 0 18px; }
+.club-text p { color: var(--muted); max-width: 60ch; }
+.timeline { list-style: none; margin: 24px 0 28px; padding: 0; display: grid; gap: 0; border-left: 2px solid var(--line); }
+.timeline li { padding: 0 0 16px 20px; position: relative; }
+.timeline li::before { content: ""; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--gold); }
+.timeline b { font-family: var(--display); font-size: 1.3rem; font-weight: 800; color: var(--royal); margin-right: 8px; }
+.btn-navy { background: var(--navy); color: #fff; }
+.btn-navy:hover { background: var(--navy-2); }
+@media (max-width: 860px) { .club-grid { grid-template-columns: 1fr; } .club-photo img { aspect-ratio: 4 / 3; } .club-photo .badge { left: 12px; } }
+
+/* Stade */
+.stadium { position: relative; color: #fff; background: var(--navy) url("img/feminines-groupama.jpg") center 40% / cover; }
+.stadium::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(18,22,58,.92), rgba(18,22,58,.55)); }
+.stadium .wrap { position: relative; padding-block: 80px; display: grid; gap: 16px; }
+.stadium h2 { font-size: clamp(2.4rem, 6vw, 4.2rem); font-weight: 900; }
+.stadium p { max-width: 52ch; color: var(--on-dark-muted); margin: 0; }
+.stadium-info { display: flex; gap: 32px; flex-wrap: wrap; margin-top: 10px; font-family: var(--cond); }
+.stadium-info div { display: grid; }
+.stadium-info small { text-transform: uppercase; letter-spacing: .12em; color: var(--gold); font-weight: 700; font-size: .78rem; }
+.stadium-info span { font-size: 1.15rem; font-weight: 600; }
+
+/* Rejoindre */
+.join { background: var(--gold); color: var(--navy); }
+.join .wrap { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; padding-block: 44px; }
+.join h2 { font-size: clamp(2rem, 4.5vw, 3rem); font-weight: 900; }
+.join p { margin: 6px 0 0; font-weight: 500; max-width: 52ch; }
+
+/* Partenaires */
+.partners { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+.partner { aspect-ratio: 3 / 2; border: 1px dashed var(--line); border-radius: 6px; display: grid; place-items: center; text-align: center; padding: 10px; font-family: var(--cond); font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; font-size: .85rem; background: var(--surface); }
+.partner { border-style: solid; color: var(--fg); }
+.partners-note { margin: 14px 0 0; color: var(--muted); font-size: .92rem; }
+.institutions { margin-top: 28px; display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 12px; }
+.hero-crest { position: absolute; right: max(16px, 6vw); top: 50%; transform: translateY(-50%); width: min(340px, 34vw); opacity: .16; pointer-events: none; }
+@media (max-width: 860px) { .hero-crest { display: none; } }
+.club img { background: transparent; }
+.inst { background: var(--navy); color: #fff; border-radius: 6px; padding: 16px 18px; display: grid; gap: 2px; align-content: center; min-width: 0; }
+.inst b { font-family: var(--display); font-size: 1.35rem; font-weight: 800; text-transform: uppercase; line-height: 1.05; }
+.inst span { font-family: var(--cond); text-transform: uppercase; letter-spacing: .1em; font-size: .75rem; color: var(--gold); font-weight: 700; }
+@media (max-width: 860px) { .institutions { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 860px) { .partners { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 480px) { .partners { grid-template-columns: repeat(2, 1fr); } }
+
+/* Contact */
+.contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; }
+.contact-list { display: grid; gap: 18px; align-content: start; }
+.contact-item { display: grid; gap: 2px; }
+.contact-item small { font-family: var(--cond); text-transform: uppercase; letter-spacing: .12em; font-weight: 700; color: var(--royal); font-size: .8rem; }
+.contact-item span { font-size: 1.1rem; font-weight: 600; }
+form.contact { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 24px; display: grid; gap: 14px; min-width: 0; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+label { display: grid; gap: 6px; font-family: var(--cond); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; font-size: .82rem; color: var(--muted); }
+input, select, textarea { font: inherit; font-family: var(--body); text-transform: none; letter-spacing: 0; font-size: 1rem; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 10px 12px; width: 100%; }
+textarea { min-height: 110px; resize: vertical; }
+.form-ok { background: rgba(31,138,76,.12); color: var(--win); border-radius: 4px; padding: 10px 12px; font-weight: 600; }
+@media (max-width: 860px) { .contact-grid { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .row2 { grid-template-columns: 1fr; } }
+
+/* Pied de page */
+footer { background: #12163a; color: var(--on-dark-muted); }
+footer .wrap { padding-block: 48px 28px; display: grid; gap: 32px; }
+.foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 32px; }
+.foot-grid h4 { font-family: var(--cond); text-transform: uppercase; letter-spacing: .12em; color: var(--gold); margin: 0 0 12px; font-size: .9rem; }
+.foot-grid ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.foot-grid a { text-decoration: none; }
+.foot-grid a:hover { color: #fff; }
+.foot-brand { display: flex; gap: 14px; align-items: center; }
+.foot-brand img { width: 64px; }
+.foot-brand b { font-family: var(--display); color: #fff; font-size: 1.8rem; text-transform: uppercase; font-weight: 900; display: block; line-height: 1; }
+.legal { border-top: 1px solid rgba(255,255,255,.1); padding-top: 18px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: .85rem; }
+@media (max-width: 760px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 420px) { .foot-grid { grid-template-columns: 1fr; } }
+</style>
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<div class="notice">Maquette — les textes marqués « Exemple » ou « à compléter » sont provisoires</div>
+
+<header class="site">
+  <div class="topbar"><div class="wrap">
+    <span>US Davézieux-Vidalon · Stade de Jossols, Davézieux (07)</span>
+    <span><a href="https://www.facebook.com/p/US-Davezieux-Vidalon-Officiel-100093022421879/" target="_blank" rel="noopener">Facebook</a> · <a href="https://www.instagram.com/usdv_officiel/" target="_blank" rel="noopener">Instagram</a> · <a href="#contact">Contact</a></span>
+  </div></div>
+  <div class="wrap nav" style="position:relative">
+    <a class="brand" href="#accueil">
+      <img src="img/logo.png" alt="Blason de l'US Davézieux-Vidalon">
+      <span><b>USDV</b><small>Davézieux-Vidalon · 1947</small></span>
+    </a>
+    <ul class="menu" id="menu">
+      <li><a href="#actus">Actualités</a></li>
+      <li><a href="#matchs">Matchs</a></li>
+      <li><a href="#equipes">Équipes</a></li>
+      <li><a href="#club">Le club</a></li>
+      <li><a href="#partenaires">Partenaires</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a class="btn btn-gold" href="#rejoindre">Rejoindre le club</a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="menu">Menu</button>
+  </div>
+</header>
+
+<main id="accueil">
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <img class="hero-crest" src="img/logo.png" alt="">
+    <div class="wrap">
+      <div class="hero-text">
+        <span class="since">Depuis 1947</span>
+        <h1>Le bleu et noir<span>de Davézieux</span></h1>
+        <p>Des U12 aux seniors en Régional 3, en passant par les féminines, l'US Davézieux-Vidalon fait vivre le football au Stade de Jossols. Partenaire du Réseau Sport OL.</p>
+        <div class="hero-cta">
+          <a class="btn btn-gold" href="#matchs">Calendrier &amp; résultats</a>
+          <a class="btn btn-ghost" href="#rejoindre">S'inscrire au club</a>
+        </div>
+      </div>
+      <aside class="next" aria-label="Prochain match">
+        <div class="next-top"><span>Prochain match</span><span class="tag-ex">Exemple</span></div>
+        <div class="next-body">
+          <div class="versus">
+            <div class="club"><img src="img/logo.png" alt="">USDV</div>
+            <div class="vs">VS</div>
+            <div class="club"><span class="crest">?</span>Adversaire</div>
+          </div>
+          <div class="next-meta">
+            <strong>Dimanche 8 nov. · 15h00</strong>
+            <span>Régional 3 · Seniors 1 · Stade de Jossols</span>
+          </div>
+          <div class="countdown" id="countdown" aria-label="Compte à rebours">
+            <div><b id="cd-d">0</b>jours</div><div><b id="cd-h">0</b>heures</div><div><b id="cd-m">0</b>min</div><div><b id="cd-s">0</b>sec</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="facts" aria-label="Le club en chiffres">
+    <div class="wrap">
+      <div class="fact"><b>1947</b><span>Année de fondation</span></div>
+      <div class="fact"><b>R3</b><span>Seniors 1 en Régional 3</span></div>
+      <div class="fact"><b>4</b><span>Équipes seniors</span></div>
+      <div class="fact"><b>OL</b><span>Club du Réseau Sport OL</span></div>
+    </div>
+  </section>
+
+  <section class="section" id="actus">
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="eyebrow">La vie du club</span><h2>Actualités</h2></div>
+        <a class="link-more" href="https://www.facebook.com/p/US-Davezieux-Vidalon-Officiel-100093022421879/" target="_blank" rel="noopener">Toutes les actus sur Facebook</a>
+      </div>
+      <div class="news">
+        <a class="card big" href="#actus">
+          <img src="img/kings-league.jpg" alt="Les jeunes de l'USDV posent avec le drapeau du club lors de la Kings League">
+          <div class="card-body">
+            <div class="card-meta"><span class="cat">Jeunes</span><span>Octobre 2026</span></div>
+            <h3>Fin de notre Kings League</h3>
+            <p>Près de deux jours de tournoi en salle pour nos jeunes, avec des équipes déguisées et le drapeau de l'USDV partout autour du terrain.</p>
+          </div>
+        </a>
+        <div class="news-side">
+          <a class="card" href="#actus">
+            <img src="img/feminines-groupama.jpg" alt="Les féminines de l'USDV devant une banderole Groupama">
+            <div class="card-body">
+              <div class="card-meta"><span class="cat">Féminines</span><span>Octobre 2026</span></div>
+              <h3>Une journée 100 % football pour nos féminines</h3>
+              <p>Retour sur une belle journée lyonnaise.</p>
+            </div>
+          </a>
+          <a class="card" href="#actus">
+            <img src="img/feminines-ol.jpg" alt="Les joueuses au centre d'entraînement de l'OL">
+            <div class="card-body">
+              <div class="card-meta"><span class="cat">Partenariat OL</span><span>Novembre 2026</span></div>
+              <h3>OL – Angers au Groupama Stadium</h3>
+              <p>Des places réservées aux licenciés grâce au Réseau Sport OL.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section dark" id="matchs">
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="eyebrow">Saison 2026–2027</span><h2>Matchs &amp; classement</h2></div>
+        <span class="tag-ex">Données d'exemple</span>
+      </div>
+      <div class="split">
+        <div class="panel">
+          <h3>Derniers résultats <span class="tag-ex">Exemple</span></h3>
+          <div class="tabs" role="tablist" aria-label="Équipe">
+            <button class="tab" role="tab" aria-selected="true">Seniors R3</button>
+            <button class="tab" role="tab" aria-selected="false">Seniors D1</button>
+            <button class="tab" role="tab" aria-selected="false">U18 R2</button>
+          </div>
+          <div class="match"><div class="m-date">Dim.<br>1 nov.</div><div class="m-teams">USDV – Adversaire<small>Régional 3 · Domicile</small></div><div class="score">2-0 <span class="res v">V</span></div></div>
+          <div class="match"><div class="m-date">Dim.<br>25 oct.</div><div class="m-teams">Adversaire – USDV<small>Régional 3 · Extérieur</small></div><div class="score">1-1 <span class="res n">N</span></div></div>
+          <div class="match"><div class="m-date">Dim.<br>18 oct.</div><div class="m-teams">USDV – Adversaire<small>Régional 3 · Domicile</small></div><div class="score">3-1 <span class="res v">V</span></div></div>
+          <div class="match"><div class="m-date">Dim.<br>11 oct.</div><div class="m-teams">Adversaire – USDV<small>Coupe</small></div><div class="score">2-1 <span class="res d">D</span></div></div>
+        </div>
+        <div class="panel">
+          <h3>Classement R3 <span class="tag-ex">Exemple</span></h3>
+          <div class="table-scroll">
+            <table class="rank">
+              <thead><tr><th>#</th><th>Équipe</th><th>J</th><th>G</th><th>N</th><th>P</th><th>Diff</th><th>Pts</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Équipe 1</td><td>7</td><td>5</td><td>1</td><td>1</td><td>+9</td><td>16</td></tr>
+                <tr><td>2</td><td>Équipe 2</td><td>7</td><td>4</td><td>2</td><td>1</td><td>+6</td><td>14</td></tr>
+                <tr class="us"><td>3</td><td>USDV</td><td>7</td><td>4</td><td>1</td><td>2</td><td>+5</td><td>13</td></tr>
+                <tr><td>4</td><td>Équipe 4</td><td>7</td><td>3</td><td>2</td><td>2</td><td>+1</td><td>11</td></tr>
+                <tr><td>5</td><td>Équipe 5</td><td>7</td><td>3</td><td>1</td><td>3</td><td>0</td><td>10</td></tr>
+                <tr><td>6</td><td>Équipe 6</td><td>7</td><td>2</td><td>2</td><td>3</td><td>−2</td><td>8</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="equipes">
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="eyebrow">Du foot pour tous</span><h2>Nos équipes</h2></div>
+        <span class="eyebrow">D'après l'agenda du club</span>
+      </div>
+      <div class="teams">
+        <a class="team" href="#equipes"><img src="img/equipe-maillots.jpg" alt=""><div><span>Équipe première</span><h3>Seniors 1</h3><p>Régional 3</p></div></a>
+        <a class="team plain" data-age="D1" href="#equipes"><div><span>Seniors</span><h3>Seniors 2</h3><p>Départemental 1</p></div></a>
+        <a class="team plain" data-age="D4" href="#equipes"><div><span>Seniors</span><h3>Seniors 3 et 4</h3><p>Départemental 4 et Départemental 5</p></div></a>
+        <a class="team plain" data-age="U18" href="#equipes"><div><span>Formation</span><h3>U18</h3><p>Régional 2</p></div></a>
+        <a class="team plain" data-age="U17" href="#equipes"><div><span>Formation</span><h3>U16 – U17</h3><p>U16 en Régional 2 · U17 en Départemental 1</p></div></a>
+        <a class="team" href="#equipes"><img src="img/equipe-salle.jpg" alt=""><div><span>Formation</span><h3>U15</h3><p>Régional 2, Départemental 1 et brassage</p></div></a>
+        <a class="team" href="#equipes"><img src="img/feminines-ol.jpg" alt=""><div><span>Féminines</span><h3>U15 F</h3><p>Section féminine</p></div></a>
+        <a class="team" href="#equipes"><img src="img/jeunes.jpg" alt=""><div><span>Préformation</span><h3>U12 – U13</h3><p>Plusieurs équipes engagées</p></div></a>
+        <a class="team plain" data-age="+" href="#equipes"><div><span>Et aussi</span><h3>École de foot</h3><p>Catégories à confirmer</p></div></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="club" style="padding-top:0">
+    <div class="wrap club-grid">
+      <div class="club-photo">
+        <img src="img/kings-finale.jpg" alt="Les jeunes de l'USDV lors de la finale de la Kings League" style="object-position:70% center">
+        <div class="badge"><b>1947</b><span>« Former des hommes et des sportifs »</span></div>
+      </div>
+      <div class="club-text">
+        <span class="eyebrow">Histoire &amp; valeurs</span>
+        <h2>Former des hommes et des sportifs</h2>
+        <p>Fondée en 1947, l'US Davézieux-Vidalon porte haut le bleu et noir dans le nord de l'Ardèche. La devise inscrite sur son blason résume son projet : former des hommes et des sportifs.</p>
+        <p>Membre du Réseau Sport OL, le club offre à ses licenciés des moments uniques avec l'Olympique Lyonnais. Ce texte sera complété avec l'histoire du club et son palmarès.</p>
+        <ul class="timeline">
+          <li><b>1947</b>Création de l'US Davézieux-Vidalon</li>
+          <li><b>····</b>Grandes dates du club (à compléter)</li>
+          <li><b>····</b>Titres et montées (à compléter)</li>
+          <li><b>Auj.</b>Seniors 1 en Régional 3, club du Réseau Sport OL</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="stadium" aria-label="Le stade">
+    <div class="wrap">
+      <span class="eyebrow" style="color:var(--gold)">Notre terrain</span>
+      <h2>Stade de Jossols</h2>
+      <p>Le terrain de l'USDV, à Davézieux. Chaque week-end, des plus jeunes aux seniors, les équipes y reçoivent leurs adversaires. Venez nous encourager !</p>
+      <div class="stadium-info">
+        <div><small>Stade</small><span>Stade de Jossols</span></div>
+        <div><small>Adresse</small><span>07430 Davézieux</span></div>
+        <div><small>À domicile</small><span>Seniors 1 · Régional 3</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="join" id="rejoindre">
+    <div class="wrap">
+      <div>
+        <h2>Rejoins l'USDV</h2>
+        <p>Joueurs, joueuses, éducateurs, bénévoles : le club recrute pour la saison. Laisse-nous un message et on te recontacte.</p>
+      </div>
+      <a class="btn btn-navy" href="#contact">Demander une inscription</a>
+    </div>
+  </section>
+
+  <section class="section" id="partenaires">
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="eyebrow">Ils nous soutiennent</span><h2>Partenaires</h2></div>
+        <a class="link-more" href="#contact">Devenir partenaire</a>
+      </div>
+      <div class="partners">
+        <div class="partner">Reverbloc</div>
+        <div class="partner">Bert &amp; You</div>
+        <div class="partner">Davézieux Auto-Moto</div>
+        <div class="partner">Logo partenaire</div>
+        <div class="partner">Logo partenaire</div>
+        <div class="partner">Logo partenaire</div>
+      </div>
+      <p class="partners-note">Partenaires repérés sur les visuels du club. Liste complète et logos officiels à fournir par le club.</p>
+      <div class="institutions">
+        <div class="inst"><span>Partenariat</span><b>Réseau Sport OL</b></div>
+        <div class="inst"><span>Fédération</span><b>FFF</b></div>
+        <div class="inst"><span>Ligue</span><b>Auvergne-Rhône-Alpes</b></div>
+        <div class="inst"><span>District</span><b>Drôme-Ardèche</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact" style="padding-top:0">
+    <div class="wrap contact-grid">
+      <div class="contact-list">
+        <div><span class="eyebrow">Une question ?</span><h2 style="font-size:clamp(2.2rem,5vw,3.4rem);font-weight:900;margin-top:8px">Contact</h2></div>
+        <div class="contact-item"><small>Stade</small><span>Stade de Jossols<br>07430 Davézieux</span></div>
+        <div class="contact-item"><small>E-mail</small><span style="overflow-wrap:anywhere">contact@footusdv.com</span></div>
+        <div class="contact-item"><small>Téléphone</small><span>À compléter</span></div>
+        <div class="contact-item"><small>Réseaux</small><span><a href="https://www.facebook.com/p/US-Davezieux-Vidalon-Officiel-100093022421879/" target="_blank" rel="noopener">Facebook</a> · <a href="https://www.instagram.com/usdv_officiel/" target="_blank" rel="noopener">Instagram @usdv_officiel</a></span></div>
+      </div>
+      <form class="contact" id="contact-form">
+        <div class="row2">
+          <label for="f-nom">Nom<input id="f-nom" name="nom" required autocomplete="name"></label>
+          <label for="f-mail">E-mail<input id="f-mail" name="mail" type="email" required autocomplete="email"></label>
+        </div>
+        <label for="f-sujet">Sujet
+          <select id="f-sujet" name="sujet">
+            <option>Inscription joueur / joueuse</option>
+            <option>Devenir bénévole ou éducateur</option>
+            <option>Devenir partenaire</option>
+            <option>Autre demande</option>
+          </select>
+        </label>
+        <label for="f-msg">Message<textarea id="f-msg" name="message" required></textarea></label>
+        <button class="btn btn-gold" type="submit" style="justify-self:start">Envoyer</button>
+        <div class="form-ok" id="form-ok" hidden>Maquette : le formulaire sera relié à l'adresse e-mail du club lors de la mise en ligne.</div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand"><img src="img/logo.png" alt=""><div><b>USDV</b><span>Davézieux-Vidalon · Depuis 1947</span></div></div>
+        <p style="margin:16px 0 0;font-size:.92rem">Stade de Jossols · 07430 Davézieux<br>contact@footusdv.com</p>
+      </div>
+      <div><h4>Le club</h4><ul><li><a href="#club">Histoire &amp; valeurs</a></li><li><a href="#equipes">Équipes</a></li><li><a href="#rejoindre">Inscriptions</a></li></ul></div>
+      <div><h4>Matchs</h4><ul><li><a href="#matchs">Résultats</a></li><li><a href="#matchs">Classement</a></li><li><a href="#accueil">Prochain match</a></li></ul></div>
+      <div><h4>Suivre le club</h4><ul><li><a href="https://www.facebook.com/p/US-Davezieux-Vidalon-Officiel-100093022421879/" target="_blank" rel="noopener">Facebook</a></li><li><a href="https://www.instagram.com/usdv_officiel/" target="_blank" rel="noopener">Instagram</a></li><li><a href="#partenaires">Partenaires</a></li></ul></div>
+    </div>
+    <div class="legal"><span>© 2026 US Davézieux-Vidalon · Tous droits réservés</span><span>Mentions légales · Confidentialité</span></div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var burger = document.getElementById('burger'), menu = document.getElementById('menu');
+  burger.addEventListener('click', function () {
+    var open = menu.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open);
+  });
+  menu.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A') { menu.classList.remove('open'); burger.setAttribute('aria-expanded', false); }
+  });
+
+  // Compte à rebours vers la date d'exemple du prochain match
+  var target = new Date('2026-11-08T15:00:00+01:00').getTime();
+  function tick() {
+    var s = Math.max(0, Math.floor((target - Date.now()) / 1000));
+    document.getElementById('cd-d').textContent = Math.floor(s / 86400);
+    document.getElementById('cd-h').textContent = Math.floor(s % 86400 / 3600);
+    document.getElementById('cd-m').textContent = Math.floor(s % 3600 / 60);
+    document.getElementById('cd-s').textContent = s % 60;
+  }
+  tick(); setInterval(tick, 1000);
+
+  document.querySelectorAll('.tab').forEach(function (t) {
+    t.addEventListener('click', function () {
+      document.querySelectorAll('.tab').forEach(function (o) { o.setAttribute('aria-selected', o === t); });
+    });
+  });
+
+  document.getElementById('contact-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    document.getElementById('form-ok').hidden = false;
+  });
+})();
+</script>
+
+</body>
+</html>
